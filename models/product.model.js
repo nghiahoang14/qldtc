@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema({
   description: String,
   category: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Category' 
+    ref: 'Category', required: false 
   },
   image: String,
   stock: { 
@@ -28,19 +28,12 @@ const productSchema = new mongoose.Schema({
     rate: { type: Number, default: 0 },
     count: { type: Number, default: 0 }
   },
-  deleted: {
-    type: Boolean,
-    default: false,
-  },
-  createdAt: { 
-    type: Date, 
-    default: Date.now 
-  },
-  updatedAt: { 
-    type: Date, 
-    default: Date.now 
+  deleted: { 
+    type: Boolean, 
+    default: false 
   }
+}, {
+  timestamps: true 
 });
 
-const Product = mongoose.model("Product", productSchema, "products");
-module.exports = Product;
+module.exports = mongoose.model("Product", productSchema, "products");

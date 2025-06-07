@@ -3,15 +3,25 @@ const express = require('express');
 const port = process.env.PORT;
 const database = require("./config/database");
 const route = require("./routes/client/index.route")
+const routeAdmin = require("./routes/admin/index.route")
+const systemConfig = require("./config/system");
+const cors = require('cors');
 
 const app = express();
 
 app.use(express.json());
-route(app);
 
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true
+};
 
+app.use(cors(corsOptions));
+app.locals.prefixAdmin = systemConfig.prefixAdmin;
 database.connect();
 
+route(app);
+routeAdmin(app);
 
 
 app.listen(port, () => {
