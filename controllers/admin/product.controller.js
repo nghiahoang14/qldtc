@@ -1,12 +1,12 @@
 const Product = require("../../models/product.model");
-
 module.exports.index = async (req, res) => {
   try {
-    let find = {
-      deleted: false
-    }
-    const products = await Product.find(find);
-    res.status(200).json({ message: 'Danh sách sản phẩm', data: products });
+    const products = await Product.find({deleted: false});
+    res.status(200).json(
+      { 
+        message: 'Danh sách sản phẩm', 
+        data: products 
+      });
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi lấy danh sách sản phẩm', error });
   }
@@ -41,7 +41,6 @@ module.exports.updateProduct = async (req, res) => {
   try {
     const id = req.params.id;
     const newData = {...req.body, updatedAt: new Date()};
-
     const result = await Product.updateOne(
       { _id: id },       
       newData    

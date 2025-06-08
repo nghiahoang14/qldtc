@@ -21,6 +21,7 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin;
 database.connect();
 
 route(app);
+
 routeAdmin(app);
 
 

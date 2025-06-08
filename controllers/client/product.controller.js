@@ -5,10 +5,10 @@ module.exports.index = async (req, res) => {
     deleted: false
   }
   const products = await Product.find(find);
-
   res.status(200).json({
       message: 'Product created successfully',
       data: products
     });
 };
 
+// _id 
