@@ -11,4 +11,3 @@ module.exports.index = async (req, res) => {
     });
 };
 
-// _id 

@@ -41,10 +41,13 @@ module.exports.updateProduct = async (req, res) => {
   try {
     const id = req.params.id;
     const newData = {...req.body, updatedAt: new Date()};
+    console.log(newData);
     const result = await Product.updateOne(
       { _id: id },       
       newData    
     );
+
+    console.log(result);
 
     if(!result) {
       return res.status(404).json({
