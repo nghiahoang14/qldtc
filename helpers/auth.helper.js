@@ -10,7 +10,7 @@ function pickUserInfo(user) {
   return {
     _id: user._id,
     name: user.name,
-    gmail: user.gmail,
+    email: user.email,
     phone: user.phone,
     address: user.address,
     status: user.status
