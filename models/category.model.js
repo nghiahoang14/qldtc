@@ -11,11 +11,13 @@ const categorySchema = new Schema({
   },
   parent: {
     type: Schema.Types.ObjectId,
-    ref: 'Category', 
+
+    ref: 'Category', // tham chiếu đến chính nó
     default: null,
   }
 }, {
-  timestamps: true, 
+  timestamps: true, // thêm createdAt và updatedAt nếu bạn muốn
 });
 
 module.exports = mongoose.model('Category', categorySchema);
+
