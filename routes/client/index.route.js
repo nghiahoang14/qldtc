@@ -2,6 +2,7 @@ const productRoute = require("./product.route")
 const authRoute = require("./auth.route")
 const reviewRoute = require("./review.route")
 
+const categoryRoute = require("./category.route")
 module.exports = (app) => {
   app.use("/products", productRoute);
 
@@ -9,5 +10,6 @@ module.exports = (app) => {
 
   app.use("/reviews", reviewRoute)
 
-  // app.use("/cart", )
+  app.use("/category", categoryRoute);
+
 }

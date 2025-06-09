@@ -11,12 +11,12 @@ module.exports = (app) => {
   const PATH_ADMIN = systemConfig.prefixAdmin;
 
   app.use(
-    "/admin/products",
+    PATH_ADMIN + "/products",
     productRoute
   );
 
   app.use(
-    PATH_ADMIN + "/categery",
+    PATH_ADMIN + "/category",
     categoryRoute
   )
 
