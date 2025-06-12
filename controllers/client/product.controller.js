@@ -6,7 +6,7 @@ module.exports.index = async (req, res) => {
   }
   const products = await Product.find(find);
   res.status(200).json({
-      message: 'Product created successfully',
+      message: 'Product retrieved successfully',
       data: products
     });
 };
