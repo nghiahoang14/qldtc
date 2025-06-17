@@ -1,5 +1,5 @@
 const Category = require("../../models/category.model");
-
+bb04a0338122a423796f1a0dfa4ff7d1ba636e5
 
 module.exports.index = async (req, res) => {
   try {
@@ -12,13 +12,13 @@ module.exports.index = async (req, res) => {
 
 module.exports.createCategory = async (req, res) => {
   try {
-    const { name,description,parent } = req.body;
+    const { name, description, parent } = req.body;
     const newCategory = new Category({
       name,
       description,
       parent,
     });
-
+    
     await newCategory.save();
 
     res.status(201).json({
@@ -69,5 +69,7 @@ module.exports.deleteCategory = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi xóa danh mục', error });
   }
+
 }
+
 
