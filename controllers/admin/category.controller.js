@@ -11,13 +11,13 @@ module.exports.index = async (req, res) => {
 
 module.exports.createCategory = async (req, res) => {
   try {
-    const { name,description,parent } = req.body;
+    const { name, description, parent } = req.body;
     const newCategory = new Category({
       name,
       description,
       parent,
     });
-
+    
     await newCategory.save();
 
     res.status(201).json({
