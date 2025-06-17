@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:3001',
   credentials: true
 };
 
@@ -23,6 +23,12 @@ database.connect();
 route(app);
 
 routeAdmin(app);
+
+app.use((req, res, next) => {
+    res.status(404).json({
+        message: `Không tìm thấy '${req.originalUrl}'. Hãy kiểm tra phương thức và đường dẫn`,
+    });
+});
 
 
 app.listen(port, () => {
