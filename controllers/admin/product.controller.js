@@ -14,7 +14,7 @@ module.exports.index = async (req, res) => {
 
 module.exports.createProduct = async (req, res) => {
   try {
-    const { title, price, description, image, rating } = req.body;
+    const { title, price, description, image, rating ,stock} = req.body;
     const newProduct = new Product({
       title,
       price,
@@ -23,7 +23,8 @@ module.exports.createProduct = async (req, res) => {
       rating: {
         rate: rating?.rate || 0,
         count: rating?.count || 0
-      }
+      },
+      stock
     });
 
     await newProduct.save();
