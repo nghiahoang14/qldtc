@@ -8,7 +8,9 @@ const categorySchema = new mongoose.Schema({
   description: {
     type: String,
   },
+
   image:String,
+
   parent: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category', 

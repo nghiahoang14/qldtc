@@ -12,12 +12,16 @@ module.exports.index = async (req, res) => {
 
 module.exports.createCategory = async (req, res) => {
   try {
-    const { name, description, parent ,image} = req.body;
+
+    const { name, description, parent, image } = req.body;
+
     const newCategory = new Category({
       name,
       description,
       parent,
-      image,
+
+      image
+
     });
     
     await newCategory.save();

@@ -24,10 +24,6 @@ const productSchema = new mongoose.Schema({
     enum: ['active', 'inactive', 'out_of_stock'], 
     default: 'active' 
   },
-  rating: {
-    rate: { type: Number, default: 0 },
-    count: { type: Number, default: 0 }
-  },
   deleted: { 
     type: Boolean, 
     default: false 

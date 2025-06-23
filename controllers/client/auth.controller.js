@@ -1,6 +1,10 @@
 const { hashPassword, pickUserInfo } = require("../../helpers/auth.helper");
 const bcrypt = require("bcryptjs")
+
 const User = require("../../models/user.model");
+const sendMailHelper = require("../../helpers/sendMail");
+const OtpCode = require("../../models/OtpCode");
+
 
 module.exports.register = async (req, res) => {
   try {
@@ -70,3 +74,53 @@ module.exports.login = async (req, res) => {
     res.status(500).json({ message: 'Lỗi server khi đăng nhập.' });
   }
 }
+
+module.exports.forgotPassword = async (req, res) => {
+  const email = req.body.email;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: 'Email không tồn tại' });
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+
+  await OtpCode.deleteMany({ email }); 
+
+  await OtpCode.create({ email, otp, expiresAt });
+  const subject = "Mã OTP xác minh lấy lại mật khẩu";
+  const html = `
+    Mã OTP để lấy lại mật khẩu là <b style="color: green;">${otp}</b>. Thời hạn sử dụng là 3 phút.
+  `;
+  sendMailHelper.sendMail(email, subject, html);
+
+  res.json({ message: 'OTP đã gửi đến email' });
+
+}
+
+module.exports.verifyOtp = async (req, res) => {
+  const { email, otp } = req.body;
+  const otpDoc = await OtpCode.findOne({ email, otp });
+
+  if (!otpDoc || otpDoc.expiresAt < Date.now()) {
+    return res.status(400).json({ message: 'OTP không hợp lệ hoặc đã hết hạn' });
+  }
+
+  res.json({ message: 'OTP hợp lệ, tiếp tục đặt lại mật khẩu' });
+};
+
+module.exports.resetPassword = async (req, res) => {
+  const { email, password, confirmPassword } = req.body;
+  if (password !== confirmPassword) {
+    return res.status(400).json({ message: 'Mật khẩu không khớp' });
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: 'Người dùng không tồn tại' });
+
+  user.password = await bcrypt.hash(password, 10);
+  await user.save();
+
+  await OtpCode.deleteMany({ email }); 
+
+  res.json({ message: 'Đặt lại mật khẩu thành công' });
+};
