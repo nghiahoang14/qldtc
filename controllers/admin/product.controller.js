@@ -1,4 +1,5 @@
 const productService = require("../../services/admin/product.service");
+const Product = require('../../models/product.model');
 
 module.exports.index = async (req, res) => {
   try {
@@ -15,17 +16,19 @@ module.exports.index = async (req, res) => {
 module.exports.createProduct = async (req, res) => {
   try {
 
-    const { title, price, description, image, rating ,stock} = req.body;
+    const { title, price, description, image,category, rating ,stock,status} = req.body;
     const newProduct = new Product({
       title,
       price,
       description,
       image,
+       category,
       rating: {
         rate: rating?.rate || 0,
         count: rating?.count || 0
       },
-      stock
+      stock,
+      status
     });
 
     await newProduct.save();
@@ -45,6 +48,7 @@ module.exports.createProduct = async (req, res) => {
 module.exports.updateProduct = async (req, res) => {
   try {
     const result = await productService.updateProduct(req.params.id, req.body);
+    console.log(req.body)
     if (!result) {
       return res.status(404).json({
         message: 'Không tìm thấy sản phẩm hoặc không có thay đổi nào.'
@@ -52,7 +56,9 @@ module.exports.updateProduct = async (req, res) => {
     }
     res.status(200).json({ message: 'Cập nhật thành công', data: result });
   } catch (error) {
-    res.status(500).json({ message: 'Lỗi khi cập nhật sản phẩm', error });
+  //   console.error("❌ Lỗi khi cập nhật sản phẩm:", error?.message);
+  // console.error("📜 Stack:", error?.stack);
+    res.status(500).json({ message: 'Lỗi khi cập nhật sản phẩm',   error: error?.message || error });
   }
 }
 

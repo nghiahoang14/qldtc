@@ -8,15 +8,14 @@ const categorySchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  image:String,
   parent: {
-    type: Schema.Types.ObjectId,
-
-    ref: 'Category', // tham chiếu đến chính nó
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category', 
     default: null,
   }
 }, {
-  timestamps: true, // thêm createdAt và updatedAt nếu bạn muốn
+  timestamps: true, 
 });
 
-module.exports = mongoose.model('Category', categorySchema);
-
+module.exports = mongoose.model('Category', categorySchema, "categories");

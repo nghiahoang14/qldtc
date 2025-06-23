@@ -12,5 +12,5 @@ router.patch("/update/:id", controller.updateCategory);
 
 router.delete("/delete/:id", controller.deleteCategory);
 
-
+router.get("/detail/:id", controller.detailCategory);
 module.exports = router
