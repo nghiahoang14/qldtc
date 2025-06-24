@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     enum: ['active', 'inactive', 'banned'],
     default: 'active'
   },
+  deleted: {
+    type: Boolean,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now
