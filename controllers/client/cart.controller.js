@@ -231,3 +231,39 @@ module.exports.removeFromCart = async (req, res) => {
         res.status(500).json({ message: "Lỗi server", error: error.message });
     }
 };
+// Xóa toàn bộ giỏ hàng (dùng sau khi đặt hàng)
+module.exports.clearCart = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        if (!userId) {
+            return res.status(400).json({ message: "Thiếu userId" });
+        }
+
+        const mongoose = require("mongoose");
+        if (!mongoose.isValidObjectId(userId)) {
+            return res.status(400).json({ message: "userId không hợp lệ" });
+        }
+
+        const cart = await Cart.findOneAndUpdate(
+            {
+                userId,
+                status: "active",
+                deleted: false,
+            },
+            {
+                $set: { items: [], totalPrice: 0 }
+            },
+            { new: true }
+        );
+
+        if (!cart) {
+            return res.status(404).json({ message: "Giỏ hàng không tồn tại" });
+        }
+
+        res.status(200).json({ message: "Đã xóa toàn bộ giỏ hàng", data: cart });
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi server", error: error.message });
+    }
+};
+

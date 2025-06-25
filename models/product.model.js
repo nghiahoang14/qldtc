@@ -19,6 +19,10 @@ const productSchema = new mongoose.Schema({
     type: Number, 
     default: 0 
   },
+  rating: {
+    rate: { type: Number, default: 0 },
+    count: { type: Number, default: 0 }
+  },
   status: { 
     type: String, 
     enum: ['active', 'inactive', 'out_of_stock'], 

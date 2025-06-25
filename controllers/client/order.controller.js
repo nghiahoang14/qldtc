@@ -2,6 +2,7 @@ const Order = require("../../models/order.model")
 
 module.exports.order = async (req, res) => {
     try {
+        console.log(req.body)
         const { userId, paymentMethod, shippingAddress, items } = req.body;
     
         if (!userId || !paymentMethod || !shippingAddress || !Array.isArray(items) || items.length === 0) {

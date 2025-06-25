@@ -76,7 +76,10 @@ module.exports.login = async (req, res) => {
 }
 
 module.exports.forgotPassword = async (req, res) => {
-  const email = req.body.email;
+ 
+  const {email} = req.body;
+  
+
   const user = await User.findOne({ email });
   if (!user) return res.status(404).json({ message: 'Email không tồn tại' });
 
@@ -110,6 +113,7 @@ module.exports.verifyOtp = async (req, res) => {
 
 module.exports.resetPassword = async (req, res) => {
   const { email, password, confirmPassword } = req.body;
+  console.log(email,password,confirmPassword);
   if (password !== confirmPassword) {
     return res.status(400).json({ message: 'Mật khẩu không khớp' });
   }
@@ -123,4 +127,24 @@ module.exports.resetPassword = async (req, res) => {
   await OtpCode.deleteMany({ email }); 
 
   res.json({ message: 'Đặt lại mật khẩu thành công' });
+};
+exports.changePassword = async (req, res) => {
+  const { email, Newpassword, CurrentPassword } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "ko tìm thấy người dùng" });
+
+    const isMatch = await bcrypt.compare(CurrentPassword, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Current password is incorrect" });
+
+    const hashed = await bcrypt.hash(Newpassword, 10);
+    user.password = hashed;
+    await user.save();
+
+    return res.status(200).json({ message: "Password changed successfully" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
 };

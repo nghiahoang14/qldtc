@@ -13,6 +13,7 @@ router.post("/password/forgot", controller.forgotPassword)
 router.post("/password/otp", controller.verifyOtp);
 
 router.post("/password/reset", controller.resetPassword);
+router.patch("/password/change", controller.changePassword);
 
 
 
