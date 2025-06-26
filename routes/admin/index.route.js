@@ -6,6 +6,10 @@ const categoryRoute = require("./category.route")
 
 
 const reviewRoute = require("./review.route")
+
+const userRoute = require("./user.route")
+
+const orderRoute = require("./order.route")
  
 
 
@@ -27,6 +31,17 @@ module.exports = (app) => {
   app.use(
     PATH_ADMIN + "/reviews",
     reviewRoute
+  )
+
+
+  app.use(
+    PATH_ADMIN + "/users",
+    userRoute
+  )
+
+  app.use(
+    PATH_ADMIN + "/orders",
+    orderRoute
   )
 
 }
