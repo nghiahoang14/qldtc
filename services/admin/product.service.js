@@ -5,7 +5,7 @@ module.exports.getAllProducts = async(find) => {
 }
 
 module.exports.createProduct = async (data) => {
-  const { title, price, description, image, rating, category } = data;
+  const { title, price, description, image, category, rating,status } = data;
 
   const newProduct = new Product({
     title,
@@ -16,7 +16,8 @@ module.exports.createProduct = async (data) => {
     rating: {
       rate: rating?.rate || 0,
       count: rating?.count || 0
-    }
+    },
+    status
   });
 
   return await newProduct.save();
@@ -34,6 +35,6 @@ module.exports.deleteProduct = async (id) => {
 };
 
 exports.getProductDetail = async (id) => {
-  return await Product.findOne({ _id: id, deleted: false });
+  return await Product.findOne({ _id: id, deleted: false }).populate("category");
 };
 

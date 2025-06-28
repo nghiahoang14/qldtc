@@ -1,5 +1,6 @@
 const Category = require("../../models/category.model");
 
+
 module.exports.index = async (req, res) => {
   try {
     const category = await Category.find();
@@ -11,12 +12,16 @@ module.exports.index = async (req, res) => {
 
 module.exports.createCategory = async (req, res) => {
   try {
+
     const { name, description, parent, image } = req.body;
+
     const newCategory = new Category({
       name,
       description,
       parent,
+
       image
+
     });
     
     await newCategory.save();
@@ -69,4 +74,23 @@ module.exports.deleteCategory = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi xóa danh mục', error });
   }
+
 }
+
+
+module.exports.detailCategory = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const category = await Category.findById(id);
+
+    if (!category) {
+      return res.status(404).json({ message: 'Không tìm thấy danh mục.' });
+    }
+
+    res.status(200).json({ message: 'Lấy thông tin danh mục thành công', data: category });
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi khi lấy thông tin danh mục', error });
+  }
+};
+

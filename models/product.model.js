@@ -14,6 +14,10 @@ const productSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Category', required: false 
   },
+  rating: {
+    rate: { type: Number, default: 0 },
+    count: { type: Number, default: 0 }
+  },
   image: String,
   stock: { 
     type: Number, 

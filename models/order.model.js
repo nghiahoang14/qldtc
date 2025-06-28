@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
     },
     paymentMethod: {
         type: String,
-        enum: ['COD', 'BANK_TRANSFER'], 
+        enum: ['COD', 'BANK'], 
         required: true
     },
     shippingAddress: {

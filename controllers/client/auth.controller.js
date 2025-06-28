@@ -8,7 +8,8 @@ const OtpCode = require("../../models/OtpCode");
 
 module.exports.register = async (req, res) => {
   try {
-    const { name, email, password, phone, address } = req.body;
+    console.log(req.body);
+    const { name="a", email, password, phone, address } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Vui lòng nhập đầy đủ thông tin.' });
@@ -45,6 +46,7 @@ module.exports.register = async (req, res) => {
 module.exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(req.body)
     if (!email || !password) {
       return res.status(400).json({ message: 'Vui lòng nhập email và mật khẩu.' });
     }

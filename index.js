@@ -24,6 +24,12 @@ route(app);
 
 routeAdmin(app);
 
+app.use((req, res, next) => {
+    res.status(404).json({
+        message: `Không tìm thấy '${req.originalUrl}'. Hãy kiểm tra phương thức và đường dẫn`,
+    });
+});
+
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
