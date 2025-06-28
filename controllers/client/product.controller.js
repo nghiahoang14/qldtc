@@ -1,14 +1,16 @@
 const Product = require("../../models/product.model");
 const productService = require("../../services/client/product.service");
+
 module.exports.index = async (req, res) => {
   const products = await Product.find({
     deleted: false,
     status: "active"
   }).populate("category")
+  
   res.status(200).json({
-      message: 'Product retrieved successfully',
-      data: products
-    });
+    message: 'Product retrieved successfully',
+    data: products
+  });
 };
 
 
@@ -26,6 +28,8 @@ module.exports.detailProduct = async (req, res) => {
     res.status(500).json({ message: 'Lỗi khi lấy thông tin sản phẩm', error });
   }
 }
+
+
 exports.searchProduct = async (req, res) => {
   try {
     const keyword = req.query.keyword || "";

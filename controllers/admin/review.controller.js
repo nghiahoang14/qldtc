@@ -12,12 +12,12 @@ module.exports.delete = async (req, res) => {
     }
 
     res.status(200).json({
-      message: 'Xóa sản phẩm thành công',
+      message: 'Xóa nhận xét thành công',
       product: deletedProduct
     });
   } catch (error) {
     res.status(500).json({
-      message: 'Lỗi khi xóa sản phẩm',
+      message: 'Lỗi khi xóa nhận xét',
       error: error.message
     });
   }

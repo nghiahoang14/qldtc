@@ -31,6 +31,7 @@ const orderSchema = new mongoose.Schema({
     {
       product_id: {
         type: mongoose.Schema.Types.ObjectId,
+
         ref: 'Product'
       },
       name: String,
@@ -38,7 +39,11 @@ const orderSchema = new mongoose.Schema({
       quantity: Number,
       price: Number
     }
-  ]
+  ],
+      
+    
+    createdAt: Date
+
 }, {
   timestamps: true
 });

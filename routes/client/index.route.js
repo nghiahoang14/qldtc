@@ -12,10 +12,10 @@ const cartRoute = require("./cart.route")
 
 module.exports = (app) => {
   app.use("/products", productRoute);
-app.use("/category", categoryRoute);
+  app.use("/category", categoryRoute);
   app.use("/auth", authRoute);
-app.use("/cart", cartRoute);
- app.use("/reviews", reviewRoute)
+  app.use("/cart", cartRoute);
+  app.use("/reviews", reviewRoute)
   app.use("/order", orderRoute)
 
 }

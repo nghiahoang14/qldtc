@@ -101,3 +101,20 @@ module.exports.deleteUser = async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 };
+
+module.exports.detail = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await User.findById(id);
+    if(!user) {
+      res.status(404).json({message: 'Không tìm thấy sản phẩm hoặc không có thay đổi nào.'});
+    }
+
+    return res.status(200).json({
+      message: "Lấy ra thông tin người dùng thành công!",
+      data: user
+    })
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi khi xóa sản phẩm', error });
+  }
+}

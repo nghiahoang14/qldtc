@@ -33,7 +33,6 @@ module.exports = (app) => {
     reviewRoute
   )
 
-
   app.use(
     PATH_ADMIN + "/users",
     userRoute

@@ -12,3 +12,23 @@ module.exports.getOrders = async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 };
+
+module.exports.getDetailOrder = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const order = await Order.findById(id)
+      .populate("userId", "name email")
+      .populate("items.product_id", "name price image")
+      .exec()
+    if (!order) {
+      return res.status(404).json({ message: 'Không tìm thấy đơn hàng' });
+    }
+
+    res.status(200).json(order);
+  } catch (error) {
+    console.error('Lỗi khi lấy chi tiết đơn hàng:', error);
+    res.status(500).json({ message: 'Đã xảy ra lỗi khi lấy chi tiết đơn hàng' });
+  }
+}
+
