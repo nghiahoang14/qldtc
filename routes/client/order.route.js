@@ -4,5 +4,5 @@ const router = express.Router();
 const controller = require("../../controllers/client/order.controller");
 
 router.post("/", controller.order);
-
+router.get("/:id", controller.getOrderById);
 module.exports = router

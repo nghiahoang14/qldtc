@@ -9,7 +9,7 @@ const OtpCode = require("../../models/OtpCode");
 module.exports.register = async (req, res) => {
   try {
     console.log(req.body);
-    const { name="a", email, password, phone, address } = req.body;
+    const { name, email, password, phone, address } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Vui lòng nhập đầy đủ thông tin.' });
@@ -52,8 +52,8 @@ module.exports.login = async (req, res) => {
     }
 
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: 'Email không đúng hoặc không tồn tại.' });
+    if (!user || user.deleted) {
+      return res.status(401).json({ message: 'Tài khoản không tồn tại hoặc đã bị xóa.' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
