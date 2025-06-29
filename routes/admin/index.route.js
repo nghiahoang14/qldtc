@@ -10,7 +10,8 @@ const reviewRoute = require("./review.route")
 const userRoute = require("./user.route")
 
 const orderRoute = require("./order.route")
- 
+
+const accountRoute = require("./account.route")
 
 
 module.exports = (app) => {
@@ -41,5 +42,10 @@ module.exports = (app) => {
   app.use(
     PATH_ADMIN + "/orders",
     orderRoute
+  )
+
+  app.use(
+    PATH_ADMIN + "/accounts",
+    accountRoute
   )
 }

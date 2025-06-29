@@ -6,4 +6,6 @@ router.get("/", controller.getOrders);
 
 router.get("/detail/:id", controller.getDetailOrder);
 
+router.delete("/delete/:id", controller.deleteOrder);
+
 module.exports = router;
