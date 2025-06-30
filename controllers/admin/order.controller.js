@@ -32,3 +32,26 @@ module.exports.getDetailOrder = async (req, res) => {
   }
 }
 
+module.exports.deleteOrder = async (req, res) => {
+  const id = req.params.id;
+
+  if (!id) {
+    return res.status(400).json({ message: "Thiếu ID đơn hàng." });
+  }
+
+  try {
+    const deleted = await Order.deleteOne({
+      _id: id
+    });
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Không tìm thấy đơn hàng để xóa." });
+    }
+
+    return res.status(200).json({ message: "Đơn hàng đã được xóa thành công." });
+  } catch (error) {
+    console.error("Lỗi khi xóa đơn hàng:", error);
+    return res.status(500).json({ message: "Đã xảy ra lỗi khi xóa đơn hàng." });
+  }
+}
+
