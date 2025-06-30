@@ -23,7 +23,7 @@ module.exports.order = async (req, res) => {
        
 
         for(const item of items) {
-            const product = await Product.findById(item.productId);
+            const product = await Product.findById(item.product_id);
             
             if(!product) {
                 return res.status(404).json({ message: `Không thể tìm thấy ${product.title} trong giỏ hàng` });
@@ -83,8 +83,8 @@ module.exports.getOrdersByUserId = async (req, res) => {
         const userId = req.params.userId;
         
         const orders = await Order.find({userId})
-            .populate("items.product_id", "title price image")
-            .sort({createAt: -1});
+            .populate("items.product_id", "title price image deleted")
+            .sort({createdAt: -1});
         
         if (!orders || orders.length === 0) {
             return res.status(404).json({ message: 'Người dùng chưa có đơn hàng nào.' });
@@ -102,5 +102,7 @@ module.exports.getOrdersByUserId = async (req, res) => {
         });
     }
 }
+
+
 
 
