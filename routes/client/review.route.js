@@ -6,4 +6,5 @@ const controller = require("../../controllers/client/review.controller");
 router.post("/", controller.review);
 
 
+router.get("/:id", controller.getReviews);
 module.exports = router

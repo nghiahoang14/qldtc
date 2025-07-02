@@ -25,8 +25,10 @@ module.exports.delete = async (req, res) => {
 
 module.exports.getReviews = async (req, res) => {
   try {
-    const reviews = await Review.find();
-
+    const reviews = await Review.find()
+      .populate("user", "name")              
+      .populate("product", "title image")    
+      .sort({ createdAt: -1 });
 
     if(!reviews) {
       return res.status(404).json({ message: 'Không có đánh giá nào' });
