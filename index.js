@@ -5,6 +5,7 @@ const database = require("./config/database");
 const route = require("./routes/client/index.route")
 const routeAdmin = require("./routes/admin/index.route")
 const systemConfig = require("./config/system");
+const path = require('path');
 const cors = require('cors');
 
 const app = express();
@@ -19,6 +20,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 database.connect();
+
+app.use("/upload", express.static(path.join(__dirname, "public/upload")));
 
 route(app);
 

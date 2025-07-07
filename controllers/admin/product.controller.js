@@ -15,8 +15,8 @@ module.exports.index = async (req, res) => {
 
 module.exports.createProduct = async (req, res) => {
   try {
-
-    const { title, price, description, image,category, rating ,stock,status} = req.body;
+    const { title, price, description, category, rating ,stock,status} = req.body;
+    const image = req.file ? req.file.path : null; 
     const newProduct = new Product({
       title,
       price,
@@ -47,13 +47,22 @@ module.exports.createProduct = async (req, res) => {
 
 module.exports.updateProduct = async (req, res) => {
   try {
-    const result = await productService.updateProduct(req.params.id, req.body);
-    console.log(req.body)
+    const { id } = req.params;
+    const updateData = { ...req.body };
+
+    // Nếu có file ảnh được upload, thì cập nhật trường image
+    if (req.file) {
+      updateData.image = `/upload/${req.file.filename}`;
+    }
+
+    const result = await productService.updateProduct(id, updateData);
+
     if (!result) {
       return res.status(404).json({
         message: 'Không tìm thấy sản phẩm hoặc không có thay đổi nào.'
       });
     }
+
     res.status(200).json({ message: 'Cập nhật thành công', data: result });
   } catch (error) {
   //   console.error("❌ Lỗi khi cập nhật sản phẩm:", error?.message);

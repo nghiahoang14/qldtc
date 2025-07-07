@@ -24,8 +24,11 @@ module.exports.createProduct = async (data) => {
 };
 
 module.exports.updateProduct = async(id, updateData) => {
+
   const newData = { ...updateData, updatedAt: new Date() };
+  
   const result = await Product.updateOne({ _id: id }, newData);
+  
   return result.modifiedCount > 0 ? result : null;
 }
 

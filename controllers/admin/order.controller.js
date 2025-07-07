@@ -34,7 +34,6 @@ module.exports.getDetailOrder = async (req, res) => {
 
 module.exports.deleteOrder = async (req, res) => {
   const id = req.params.id;
-
   if (!id) {
     return res.status(400).json({ message: "Thiếu ID đơn hàng." });
   }
