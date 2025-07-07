@@ -18,7 +18,6 @@ module.exports.index = async (req, res) => {
 module.exports.detailProduct = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log("🧪 ID:", typeof id);
     
     const product = await Product.findOne({_id: id, deleted: false});
 

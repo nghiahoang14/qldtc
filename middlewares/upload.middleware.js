@@ -1,43 +1,50 @@
+// middlewares/cloudinary.middleware.js
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+const streamifier = require("streamifier");
+const cloudinary = require("cloudinary").v2;
 
-// Tạo thư mục nếu chưa có
-const uploadPath = path.join(__dirname, "..", "public", "upload");
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath, { recursive: true });
-}
-
-// Cấu hình Multer
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadPath);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + "-" + uniqueSuffix + ext);
-  },
+// Cấu hình Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_KEY,
+  api_secret: process.env.CLOUD_SECRET,
 });
 
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|gif/;
-  const ext = path.extname(file.originalname).toLowerCase();
-  const mime = file.mimetype;
+// Dùng memory storage (buffer)
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
-  if (allowedTypes.test(ext) && allowedTypes.test(mime)) {
-    cb(null, true);
-  } else {
-    cb(new Error("Chỉ hỗ trợ ảnh jpeg, jpg, png, gif"));
+/**
+ * Middleware: upload single file, upload lên Cloudinary,
+ * rồi gán đường dẫn vào req.body.<fieldname> (vd: req.body.image)
+ */
+const cloudinaryUploadMiddleware = (fieldName = "image") => [
+  upload.single(fieldName),
+  async (req, res, next) => {
+    if (!req.file) return next();
+
+    try {
+      const streamUpload = () => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: "products" },
+            (error, result) => {
+              if (result) resolve(result);
+              else reject(error);
+            }
+          );
+          streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+      };
+
+      const result = await streamUpload();
+      req.body[fieldName] = result.secure_url; // Gán URL cloudinary vào req.body
+      next();
+    } catch (err) {
+      console.error("Upload Cloudinary error:", err);
+      res.status(500).json({ message: "Lỗi khi upload ảnh lên Cloudinary", error: err });
+    }
   }
-};
+];
 
-const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
-  },
-});
-
-module.exports = upload;
+module.exports = cloudinaryUploadMiddleware;
