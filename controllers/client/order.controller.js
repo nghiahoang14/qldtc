@@ -3,22 +3,20 @@ const Product = require("../../models/product.model")
 
 module.exports.order = async (req, res) => {
     try {
-        console.log(req.body)
         const { userId, paymentMethod, shippingAddress, items,phone,shippingMethod,totalPrice } = req.body;
-    
 
         if (!userId || !paymentMethod || !shippingAddress|| !shippingMethod|| !totalPrice|| !phone || !Array.isArray(items) || items.length === 0) {
         return res.status(400).json({ message: 'Thông tin đơn hàng không đầy đủ.' });
         }
 
         const newOrder = new Order({
-        userId,
-        paymentMethod,
-        shippingAddress,
-        items,
-        phone,
-        shippingMethod,
-        totalPrice
+            userId,
+            paymentMethod,
+            shippingAddress,
+            items,
+            phone,
+            shippingMethod,
+            totalPrice
         });
        
 

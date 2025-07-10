@@ -15,14 +15,13 @@ module.exports.index = async (req, res) => {
 
 module.exports.createProduct = async (req, res) => {
   try {
-
     const { title, price, description, image,category, rating ,stock,status} = req.body;
     const newProduct = new Product({
       title,
       price,
       description,
       image,
-       category,
+      category,
       rating: {
         rate: rating?.rate || 0,
         count: rating?.count || 0
@@ -32,9 +31,6 @@ module.exports.createProduct = async (req, res) => {
     });
 
     await newProduct.save();
-
-
-   
 
     res.status(201).json({
       message: 'Product created successfully',
@@ -55,8 +51,6 @@ module.exports.updateProduct = async (req, res) => {
     }
     res.status(200).json({ message: 'Cập nhật thành công', data: result });
   } catch (error) {
-  //   console.error("❌ Lỗi khi cập nhật sản phẩm:", error?.message);
-  // console.error("📜 Stack:", error?.stack);
     res.status(500).json({ message: 'Lỗi khi cập nhật sản phẩm',   error: error?.message || error });
   }
 }

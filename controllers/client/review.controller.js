@@ -1,9 +1,9 @@
 const Review = require("../../models/review.model");
 const Order = require("../../models/order.model");
+const Product = require("../../models/product.model");
 const review = async (req, res) => {
   try {
     const { rating, comment, product, user, order } = req.body;
-    console.log(req.body);
 
     if (!rating || !product || !user || !order) {
       return res.status(400).json({ message: "Thiếu thông tin bắt buộc: rating, product, user, order" });
@@ -35,6 +35,19 @@ const review = async (req, res) => {
     // ✅ 3. Tạo review
     const newReview = new Review({ rating, comment, product, user, order });
     await newReview.save();
+
+    const allReviews = await Review.find({ product });
+
+    const totalRatings = allReviews.reduce((sum, r) => sum + r.rating, 0);
+    const ratingCount = allReviews.length;
+    const averageRating = totalRatings / ratingCount;
+
+    await Product.findByIdAndUpdate(product, {
+      $set: {
+        "rating.rate": averageRating.toFixed(1),
+        "rating.count": ratingCount
+      }
+    });
 
     res.status(201).json({
       message: "Tạo đánh giá thành công",
