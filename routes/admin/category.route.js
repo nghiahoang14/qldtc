@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
+const uploadCloudinary = require("../../middlewares/upload.middleware");
 
 const controller = require("../../controllers/admin/category.controller");
 
 router.get("/", controller.index);
 
-router.post("/create", controller.createCategory);
+router.post("/create", uploadCloudinary("image"),controller.createCategory);
 
-router.patch("/update/:id", controller.updateCategory);
+router.patch("/update/:id",uploadCloudinary("image"), controller.updateCategory);
 
 router.delete("/delete/:id", controller.deleteCategory);
 

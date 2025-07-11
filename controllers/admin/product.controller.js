@@ -14,20 +14,32 @@ module.exports.index = async (req, res) => {
 };
 
 module.exports.createProduct = async (req, res) => {
-  try {
+  
 
-    const { title, price, description, image,category, rating ,stock,status} = req.body;
-    const newProduct = new Product({
+  try {
+    const {
       title,
       price,
       description,
       image,
-       category,
-      rating: {
-        rate: rating?.rate || 0,
-        count: rating?.count || 0
-      },
+      category,
+      rate,
+      count,
       stock,
+      status
+    } = req.body;
+
+    const newProduct = new Product({
+      title,
+      price: parseFloat(price),
+      description,
+      image,
+      category,
+      rating: {
+        rate: parseFloat(rate) || 0,
+        count: parseInt(count) || 0
+      },
+      stock: parseInt(stock),
       status
     });
 

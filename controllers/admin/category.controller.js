@@ -31,8 +31,10 @@ module.exports.createCategory = async (req, res) => {
       category: newCategory
     });
   } catch (error) {
+       console.error("❌ Lỗi khi tạo danh mục:", error?.message || error);
     res.status(500).json({ message: 'Failed to create category', error });
   }
+  
 }
 
 module.exports.updateCategory = async (req, res) => {
