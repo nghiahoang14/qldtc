@@ -13,6 +13,6 @@ router.patch("/update/:id",uploadCloudinary("image"), controller.updateCategory)
 
 router.delete("/delete/:id", controller.deleteCategory);
 
-router.get("/detail/:id", controller.detailCategory);
+router.get("/detail/:id", controller.detailCategory);   
 
 module.exports = router

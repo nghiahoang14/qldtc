@@ -29,7 +29,8 @@ const ReviewSchema = new mongoose.Schema({
   type: mongoose.Schema.Types.ObjectId,
   ref: 'Order',
   required: true
-}
+},
+
 });
 ReviewSchema.index({ user: 1, product: 1, order: 1 }, { unique: true });
 
